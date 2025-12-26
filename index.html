@@ -9,7 +9,7 @@
     
     <style>
         :root {
-            --main-font: 'Cairo', sans-serif; /* الخط البديل لـ Hacen */
+            --main-font: 'Cairo', sans-serif;
             --purple-btn: linear-gradient(to bottom, #9d5bb1, #7b3e91);
             --green-btn: linear-gradient(to bottom, #69bc00, #4b8900);
             --blue-btn: linear-gradient(to bottom, #0056e0, #003da1);
@@ -29,33 +29,33 @@
             min-height: 100vh;
         }
 
-        /* تعديل سكيل اللوجوهات ليكون أكبر */
+        /* تنسيق اللوجوهات (Scale كبير) */
         .logo-section {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px; /* زيادة المسافة بين اللوجوهين */
-            margin-bottom: 25px;
+            gap: 25px;
+            margin-bottom: 20px;
             width: 100%;
         }
 
         .logo-section img {
-            height: 110px; /* تم تكبير الحجم من 60 إلى 110 */
+            height: 110px; 
             width: auto;
-            max-width: 45%; /* لضمان عدم خروجهم عن الشاشة في الموبايلات الصغيرة */
+            max-width: 45%;
             object-fit: contain;
-            /* إضافة ظل خفيف لإبراز اللوجو */
             filter: drop-shadow(0 5px 10px rgba(0,0,0,0.05));
         }
 
-        .title {
-            font-size: 28px;
+        .main-title {
+            font-size: 26px;
             font-weight: 900;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
             color: #000;
             text-align: center;
         }
 
+        /* الحاوية والأزرار */
         .links-container {
             width: 100%;
             max-width: 350px;
@@ -74,16 +74,14 @@
             text-decoration: none;
             color: white;
             font-weight: 700;
-            font-size: 20px;
+            font-size: 19px;
             box-shadow: inset 0 -6px 8px rgba(0,0,0,0.2), 0 8px 15px rgba(0,0,0,0.1);
             transition: transform 0.2s ease;
             border: none;
             cursor: pointer;
         }
 
-        .btn:active {
-            transform: scale(0.95);
-        }
+        .btn:active { transform: scale(0.96); }
 
         .secret { background: var(--purple-btn); color: #f6e395 !important; }
         .whatsapp { background: var(--green-btn); }
@@ -98,34 +96,55 @@
             font-size: 16px;
         }
 
-        /* نافذة الرسالة */
+        /* تصميم المودال (الرسالة العشوائية) */
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            transition: 0.3s;
         }
+
         .modal-card {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             background: white;
-            padding: 40px 20px;
-            border-radius: 25px;
+            padding: 40px 25px;
+            border-radius: 30px;
             width: 85%;
-            max-width: 380px;
+            max-width: 400px;
             text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
+
+        .modal-card i {
+            font-size: 40px;
+            color: #7b3e91;
+            margin-bottom: 20px;
+        }
+
+        .modal-card p {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 25px;
+            direction: ltr; /* لأن الاقتباسات إنجليزية */
+        }
+
         .close-btn {
-            margin-top: 25px;
-            background: #7b3e91;
+            background: var(--purple-btn);
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 12px 40px;
             border-radius: 50px;
-            font-weight: bold;
+            font-weight: 700;
+            font-family: var(--main-font);
             cursor: pointer;
+            box-shadow: 0 5px 15px rgba(123, 62, 145, 0.3);
         }
     </style>
 </head>
@@ -136,12 +155,12 @@
         <img src="sprint-coworking-space.png" alt="Sprint Coworking Space">
     </div>
 
-    <div class="title">START TO ACHIEVE</div>
+    <div class="main-title">START TO ACHIEVE</div>
 
     <div class="links-container">
         <button class="btn secret" onclick="openMsg()">
             <span>your secret message</span>
-            <i class="fa-solid fa-envelope-open-text"></i>
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
         </button>
 
         <a href="https://wa.me/message/NZRG2BOX7BACH1" class="btn whatsapp" target="_blank">
@@ -172,18 +191,26 @@
 
     <div class="modal-overlay" id="overlay">
         <div class="modal-card">
-            <h3 id="msg-text"></h3>
-            <button class="close-btn" onclick="closeMsg()">إغلاق</button>
+            <i class="fa-solid fa-quote-left"></i>
+            <p id="msg-text"></p>
+            <button class="close-btn" onclick="closeMsg()">Close</button>
         </div>
     </div>
 
     <script>
         const messages = [
-            "النجاح يبدأ بخطوة، وأنت بدأت بالفعل! ✨",
-            "يومك مليء بالإنجازات في Sprint Hub 🚀",
-            "تذكر أن تعبك اليوم هو فخرك غداً.",
-            "ابتسم، أنت في المكان المخصص للمبدعين.",
-            "كل فكرة عظيمة تحتاج لمكان هادئ لتنمو.. أنت هنا الآن."
+            "“What the new year brings to you will depend a great deal on what you bring to the new year.” – Vern McLellan",
+            "“Write it on your heart that every day is the best day in the year.” – Ralph Waldo Emerson",
+            "“The beginning is the most important part of the work.” – Plato",
+            "“You are never too old to set another goal or to dream a new dream.” – C.S. Lewis",
+            "“The secret of getting ahead is getting started.” – Mark Twain",
+            "“Don’t wait. The time will never be just right.” – Napoleon Hill",
+            "“It always seems impossible until it’s done.” – Nelson Mandela",
+            "“Success usually comes to those who are too busy to be looking for it.” – Henry David Thoreau",
+            "“Here’s to those who inspire us and don’t even know it.”",
+            "“Life shrinks or expands in proportion to one’s courage.” – Anais Nin",
+            "“Create your own destiny. If you don’t, someone else will.” – Chris Leber",
+            "“You are never too old to set another goal or to dream a new dream.”"
         ];
 
         function openMsg() {
@@ -195,6 +222,11 @@
         function closeMsg() {
             document.getElementById('overlay').style.display = 'none';
         }
+
+        // إغلاق عند الضغط خارج الكارد
+        document.getElementById('overlay').addEventListener('click', function(e) {
+            if (e.target === this) closeMsg();
+        });
     </script>
 </body>
 </html>
