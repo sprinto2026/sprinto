@@ -31,7 +31,6 @@
             position: relative;
         }
 
-        /* حاوية المطر الكثيف */
         #rain-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -51,7 +50,6 @@
             to { transform: translateY(130vh) rotate(360deg); }
         }
 
-        /* --- تعديل السيمترية وحجم اللوجوهات --- */
         .content-wrapper {
             position: relative;
             z-index: 10;
@@ -65,27 +63,21 @@
         .logo-section {
             display: flex;
             justify-content: center;
-            align-items: center; /* يضمن التوازن الرأسي */
-            gap: 30px; /* مسافة متساوية بينهما */
+            align-items: center;
+            gap: 30px;
             margin-bottom: 25px;
             width: 100%;
         }
 
         .logo-section img {
-            /* تكبير الحجم وضمان التساوي */
             height: 140px; 
             width: 140px;
-            object-fit: contain; /* يحافظ على أبعاد اللوجو داخل المربع */
+            object-fit: contain;
             filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
-            transition: transform 0.3s ease;
-        }
-
-        .logo-section img:hover {
-            transform: scale(1.05); /* حركة بسيطة عند اللمس */
         }
 
         .main-title {
-            font-size: 30px; /* تكبير بسيط للعنوان */
+            font-size: 30px;
             font-weight: 900;
             margin-bottom: 40px;
             color: #ffffff;
@@ -162,7 +154,7 @@
         <div class="main-title">START TO ACHIEVE</div>
 
         <div class="links-container">
-            <button class="btn secret" onclick="openMsg()">
+            <button class="btn secret" onclick="handleSecretMessage()">
                 <span>your secret message</span>
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
             </button>
@@ -178,11 +170,12 @@
         <div class="modal-card">
             <i class="fa-solid fa-quote-left" style="font-size: 40px; color: #9d5bb1; opacity: 0.8;"></i>
             <p id="msg-text" style="direction: ltr; margin: 25px 0; font-size: 20px; font-weight: 700; color: #fff;"></p>
-            <button onclick="closeMsg()" style="background: var(--purple-btn); color: white; border: none; padding: 12px 40px; border-radius: 50px; cursor: pointer; font-weight: bold; font-family: 'Cairo';">Close</button>
+            <button onclick="closeMsg()" style="background: var(--purple-btn); color: white; border: none; padding: 12px 40px; border-radius: 50px; cursor: pointer; font-weight: bold;">Close</button>
         </div>
     </div>
 
     <script>
+        // --- تأثير المطر الملون ---
         const rainContainer = document.getElementById('rain-container');
         const shapeFiles = ['shape1.png', 'shape2.png', 'shape3.png', 'shape4.png'];
 
@@ -190,42 +183,53 @@
             const drop = document.createElement('img');
             drop.src = shapeFiles[Math.floor(Math.random() * shapeFiles.length)];
             drop.classList.add('rain-drop');
-            
             const startX = Math.random() * window.innerWidth;
             const size = Math.random() * (180 - 100) + 100; 
             const duration = Math.random() * (6 - 4) + 4; 
-            
             drop.style.left = (startX - 90) + 'px'; 
             drop.style.width = size + 'px';
             drop.style.animationDuration = duration + 's';
-            
             rainContainer.appendChild(drop);
             setTimeout(() => { drop.remove(); }, duration * 1000);
         }
-
         setInterval(createDrop, 120);
 
+        // --- نظام الرسالة اليومية الواحدة ---
         const messages = [
-            "“What the new year brings to you will depend a great deal on what you bring to the new year.” – Vern McLellan",
-            "“Write it on your heart that every day is the best day in the year.” – Ralph Waldo Emerson",
-            "“The beginning is the most important part of the work.” – Plato",
-            "“You are never too old to set another goal or to dream a new dream.” – C.S. Lewis",
-            "“The secret of getting ahead is getting started.” – Mark Twain",
-            "“Don’t wait. The time will never be just right.” – Napoleon Hill",
-            "“It always seems impossible until it’s done.” – Nelson Mandela",
-            "“Success usually comes to those who are too busy to be looking for it.” – Henry David Thoreau",
-            "“Here’s to those who inspire us and don’t even know it.”",
-            "“Life shrinks or expands in proportion to one’s courage.” – Anais Nin",
-            "“Create your own destiny. If you don’t, someone else will.” – Chris Leber",
-            "“You are never too old to set another goal or to dream a new dream.”"
+            "“What the new year brings to you will depend a great deal on what you bring to the new year.”",
+            "“Write it on your heart that every day is the best day in the year.”",
+            "“The beginning is the most important part of the work.”",
+            "“You are never too old to set another goal or to dream a new dream.”",
+            "“The secret of getting ahead is getting started.”",
+            "“Don’t wait. The time will never be just right.”",
+            "“It always seems impossible until it’s done.”",
+            "“Success usually comes to those who are too busy to be looking for it.”",
+            "“Life shrinks or expands in proportion to one’s courage.”",
+            "“Create your own destiny. If you don’t, someone else will.”"
         ];
 
-        function openMsg() {
-            document.getElementById('msg-text').innerText = messages[Math.floor(Math.random() * messages.length)];
+        function handleSecretMessage() {
+            const today = new Date().toDateString(); // يحصل على التاريخ مثل: Wed Dec 31 2025
+            const lastDate = localStorage.getItem('last_visit_date');
+            const savedMsg = localStorage.getItem('daily_message');
+
+            let messageToShow = "";
+
+            // التحقق: هل الزيارة في نفس اليوم؟
+            if (lastDate === today && savedMsg) {
+                messageToShow = savedMsg;
+            } else {
+                // يوم جديد أو أول مرة يفتح الموقع: اختر رسالة جديدة
+                messageToShow = messages[Math.floor(Math.random() * messages.length)];
+                localStorage.setItem('last_visit_date', today);
+                localStorage.setItem('daily_message', messageToShow);
+            }
+
+            document.getElementById('msg-text').innerText = messageToShow;
             document.getElementById('overlay').style.display = 'block';
         }
-        function closeMsg() { document.getElementById('overlay').style.display = 'none'; }
 
+        function closeMsg() { document.getElementById('overlay').style.display = 'none'; }
         document.getElementById('overlay').addEventListener('click', function(e) {
             if (e.target === this) closeMsg();
         });
