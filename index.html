@@ -20,45 +20,82 @@
 
         body {
             font-family: var(--main-font);
-            background-color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background-color: #000000; 
             margin: 0;
             padding: 30px 15px;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* تنسيق اللوجوهات (Scale كبير) */
+        /* حاوية المطر الكثيف */
+        #rain-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .rain-drop {
+            position: absolute;
+            top: -250px;
+            opacity: 0.9; 
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(130vh) rotate(360deg); }
+        }
+
+        /* --- تعديل السيمترية وحجم اللوجوهات --- */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
         .logo-section {
             display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 20px;
+            align-items: center; /* يضمن التوازن الرأسي */
+            gap: 30px; /* مسافة متساوية بينهما */
+            margin-bottom: 25px;
             width: 100%;
         }
 
         .logo-section img {
-            height: 110px; 
-            width: auto;
-            max-width: 45%;
-            object-fit: contain;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.05));
+            /* تكبير الحجم وضمان التساوي */
+            height: 140px; 
+            width: 140px;
+            object-fit: contain; /* يحافظ على أبعاد اللوجو داخل المربع */
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
+            transition: transform 0.3s ease;
+        }
+
+        .logo-section img:hover {
+            transform: scale(1.05); /* حركة بسيطة عند اللمس */
         }
 
         .main-title {
-            font-size: 26px;
+            font-size: 30px; /* تكبير بسيط للعنوان */
             font-weight: 900;
-            margin-bottom: 35px;
-            color: #000;
-            text-align: center;
+            margin-bottom: 40px;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.4);
+            letter-spacing: 1px;
         }
 
-        /* الحاوية والأزرار */
         .links-container {
             width: 100%;
-            max-width: 350px;
+            max-width: 360px;
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -69,135 +106,105 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 25px;
-            height: 68px;
+            height: 70px;
             border-radius: 50px;
             text-decoration: none;
             color: white;
             font-weight: 700;
-            font-size: 19px;
-            box-shadow: inset 0 -6px 8px rgba(0,0,0,0.2), 0 8px 15px rgba(0,0,0,0.1);
-            transition: transform 0.2s ease;
-            border: none;
+            font-size: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            transition: 0.2s;
+            border: 1px solid rgba(255,255,255,0.15);
             cursor: pointer;
         }
 
         .btn:active { transform: scale(0.96); }
-
         .secret { background: var(--purple-btn); color: #f6e395 !important; }
         .whatsapp { background: var(--green-btn); }
         .facebook { background: var(--blue-btn); }
-        .tiktok { background: var(--black-btn); }
+        .tiktok { background: var(--black-btn); border: 1px solid #555; }
         .instagram { background: var(--orange-btn); }
-        .linkedin { 
-            background: var(--cyan-btn); 
-            width: 65%; 
-            margin: 5px auto; 
-            height: 48px; 
-            font-size: 16px;
-        }
+        .linkedin { background: var(--cyan-btn); width: 65%; margin: 5px auto; height: 50px; font-size: 17px; }
 
-        /* تصميم المودال (الرسالة العشوائية) */
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(10px);
             z-index: 2000;
-            transition: 0.3s;
         }
-
         .modal-card {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
-            padding: 40px 25px;
-            border-radius: 30px;
-            width: 85%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
-        .modal-card i {
-            font-size: 40px;
-            color: #7b3e91;
-            margin-bottom: 20px;
-        }
-
-        .modal-card p {
-            font-size: 18px;
-            font-weight: 600;
-            line-height: 1.6;
-            color: #333;
-            margin-bottom: 25px;
-            direction: ltr; /* لأن الاقتباسات إنجليزية */
-        }
-
-        .close-btn {
-            background: var(--purple-btn);
+            background: #151515;
             color: white;
-            border: none;
-            padding: 12px 40px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-family: var(--main-font);
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(123, 62, 145, 0.3);
+            padding: 45px 30px;
+            border-radius: 35px;
+            width: 85%;
+            max-width: 420px;
+            text-align: center;
+            border: 1px solid #333;
         }
     </style>
 </head>
 <body>
 
-    <div class="logo-section">
-        <img src="sprint-business-hub.png" alt="Sprint Business Hub">
-        <img src="sprint-coworking-space.png" alt="Sprint Coworking Space">
-    </div>
+    <div id="rain-container"></div>
 
-    <div class="main-title">START TO ACHIEVE</div>
+    <div class="content-wrapper">
+        <div class="logo-section">
+            <img src="sprint-business-hub.png" alt="Sprint Business Hub">
+            <img src="sprint-coworking-space.png" alt="Sprint Coworking Space">
+        </div>
 
-    <div class="links-container">
-        <button class="btn secret" onclick="openMsg()">
-            <span>your secret message</span>
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-        </button>
+        <div class="main-title">START TO ACHIEVE</div>
 
-        <a href="https://wa.me/message/NZRG2BOX7BACH1" class="btn whatsapp" target="_blank">
-            <span>whatsapp</span>
-            <i class="fa-brands fa-whatsapp"></i>
-        </a>
-
-        <a href="https://www.facebook.com/share/17iQKvRjx4/?mibextid=wwXIfr" class="btn facebook" target="_blank">
-            <span>facebook</span>
-            <i class="fa-brands fa-facebook-f"></i>
-        </a>
-
-        <a href="https://www.tiktok.com/@sprinto.coworkingspace?_r=1&_t=ZS-92YJH7ADaI3" class="btn tiktok" target="_blank">
-            <span>Tik Tok</span>
-            <i class="fa-brands fa-tiktok"></i>
-        </a>
-
-        <a href="https://www.instagram.com/sprintocoworkingspace?igsh=MXQ4Ym9kYTA2bG9wYg%3D%3D&utm_source=qr" class="btn instagram" target="_blank">
-            <span>Instagram</span>
-            <i class="fa-brands fa-instagram"></i>
-        </a>
-
-        <a href="https://www.linkedin.com/company/sprinto-coworking-space/" class="btn linkedin" target="_blank">
-            <span>linked in</span>
-            <i class="fa-brands fa-linkedin-in"></i>
-        </a>
+        <div class="links-container">
+            <button class="btn secret" onclick="openMsg()">
+                <span>your secret message</span>
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </button>
+            <a href="https://wa.me/message/NZRG2BOX7BACH1" class="btn whatsapp" target="_blank"><span>whatsapp</span><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="https://www.facebook.com/share/17iQKvRjx4/?mibextid=wwXIfr" class="btn facebook" target="_blank"><span>facebook</span><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.tiktok.com/@sprinto.coworkingspace?_r=1&_t=ZS-92YJH7ADaI3" class="btn tiktok" target="_blank"><span>Tik Tok</span><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://www.instagram.com/sprintocoworkingspace?igsh=MXQ4Ym9kYTA2bG9wYg%3D%3D&utm_source=qr" class="btn instagram" target="_blank"><span>Instagram</span><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/company/sprinto-coworking-space/" class="btn linkedin" target="_blank"><span>linked in</span><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
     </div>
 
     <div class="modal-overlay" id="overlay">
         <div class="modal-card">
-            <i class="fa-solid fa-quote-left"></i>
-            <p id="msg-text"></p>
-            <button class="close-btn" onclick="closeMsg()">Close</button>
+            <i class="fa-solid fa-quote-left" style="font-size: 40px; color: #9d5bb1; opacity: 0.8;"></i>
+            <p id="msg-text" style="direction: ltr; margin: 25px 0; font-size: 20px; font-weight: 700; color: #fff;"></p>
+            <button onclick="closeMsg()" style="background: var(--purple-btn); color: white; border: none; padding: 12px 40px; border-radius: 50px; cursor: pointer; font-weight: bold; font-family: 'Cairo';">Close</button>
         </div>
     </div>
 
     <script>
+        const rainContainer = document.getElementById('rain-container');
+        const shapeFiles = ['shape1.png', 'shape2.png', 'shape3.png', 'shape4.png'];
+
+        function createDrop() {
+            const drop = document.createElement('img');
+            drop.src = shapeFiles[Math.floor(Math.random() * shapeFiles.length)];
+            drop.classList.add('rain-drop');
+            
+            const startX = Math.random() * window.innerWidth;
+            const size = Math.random() * (180 - 100) + 100; 
+            const duration = Math.random() * (6 - 4) + 4; 
+            
+            drop.style.left = (startX - 90) + 'px'; 
+            drop.style.width = size + 'px';
+            drop.style.animationDuration = duration + 's';
+            
+            rainContainer.appendChild(drop);
+            setTimeout(() => { drop.remove(); }, duration * 1000);
+        }
+
+        setInterval(createDrop, 120);
+
         const messages = [
             "“What the new year brings to you will depend a great deal on what you bring to the new year.” – Vern McLellan",
             "“Write it on your heart that every day is the best day in the year.” – Ralph Waldo Emerson",
@@ -214,16 +221,11 @@
         ];
 
         function openMsg() {
-            const random = messages[Math.floor(Math.random() * messages.length)];
-            document.getElementById('msg-text').innerText = random;
+            document.getElementById('msg-text').innerText = messages[Math.floor(Math.random() * messages.length)];
             document.getElementById('overlay').style.display = 'block';
         }
+        function closeMsg() { document.getElementById('overlay').style.display = 'none'; }
 
-        function closeMsg() {
-            document.getElementById('overlay').style.display = 'none';
-        }
-
-        // إغلاق عند الضغط خارج الكارد
         document.getElementById('overlay').addEventListener('click', function(e) {
             if (e.target === this) closeMsg();
         });
