@@ -31,6 +31,7 @@
             position: relative;
         }
 
+        /* حاوية المطر الملون */
         #rain-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -82,7 +83,6 @@
             margin-bottom: 40px;
             color: #ffffff;
             text-shadow: 0 0 20px rgba(255,255,255,0.4);
-            letter-spacing: 1px;
         }
 
         .links-container {
@@ -147,14 +147,14 @@
 
     <div class="content-wrapper">
         <div class="logo-section">
-            <img src="sprint-business-hub.png" alt="Sprint Business Hub">
-            <img src="sprint-coworking-space.png" alt="Sprint Coworking Space">
+            <img src="sprint-business-hub.png" alt="Sprint Logo 1">
+            <img src="sprint-coworking-space.png" alt="Sprint Logo 2">
         </div>
 
         <div class="main-title">START TO ACHIEVE</div>
 
         <div class="links-container">
-            <button class="btn secret" onclick="handleSecretMessage()">
+            <button class="btn secret" onclick="handleDailyMessage()">
                 <span>your secret message</span>
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
             </button>
@@ -175,7 +175,7 @@
     </div>
 
     <script>
-        // --- تأثير المطر الملون ---
+        // --- 1. تأثير المطر الكثيف ---
         const rainContainer = document.getElementById('rain-container');
         const shapeFiles = ['shape1.png', 'shape2.png', 'shape3.png', 'shape4.png'];
 
@@ -194,7 +194,7 @@
         }
         setInterval(createDrop, 120);
 
-        // --- نظام الرسالة اليومية الواحدة ---
+        // --- 2. نظام الرسالة اليومية الواحدة فقط ---
         const messages = [
             "“What the new year brings to you will depend a great deal on what you bring to the new year.”",
             "“Write it on your heart that every day is the best day in the year.”",
@@ -208,24 +208,24 @@
             "“Create your own destiny. If you don’t, someone else will.”"
         ];
 
-        function handleSecretMessage() {
-            const today = new Date().toDateString(); // يحصل على التاريخ مثل: Wed Dec 31 2025
-            const lastDate = localStorage.getItem('last_visit_date');
-            const savedMsg = localStorage.getItem('daily_message');
+        function handleDailyMessage() {
+            const today = new Date().toDateString(); // يحصل على التاريخ الحالي للهاتف
+            const lastSavedDate = localStorage.getItem('sprint_last_date');
+            const lastSavedMsg = localStorage.getItem('sprint_daily_msg');
 
-            let messageToShow = "";
+            let finalMessage = "";
 
-            // التحقق: هل الزيارة في نفس اليوم؟
-            if (lastDate === today && savedMsg) {
-                messageToShow = savedMsg;
+            if (lastSavedDate === today && lastSavedMsg) {
+                // إذا كان المستخدم قد رأى رسالة اليوم بالفعل، نعرضها هي نفسها
+                finalMessage = lastSavedMsg;
             } else {
-                // يوم جديد أو أول مرة يفتح الموقع: اختر رسالة جديدة
-                messageToShow = messages[Math.floor(Math.random() * messages.length)];
-                localStorage.setItem('last_visit_date', today);
-                localStorage.setItem('daily_message', messageToShow);
+                // إذا كان يوم جديد، نختار رسالة عشوائية جديدة ونحفظها
+                finalMessage = messages[Math.floor(Math.random() * messages.length)];
+                localStorage.setItem('sprint_last_date', today);
+                localStorage.setItem('sprint_daily_msg', finalMessage);
             }
 
-            document.getElementById('msg-text').innerText = messageToShow;
+            document.getElementById('msg-text').innerText = finalMessage;
             document.getElementById('overlay').style.display = 'block';
         }
 
