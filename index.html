@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        : root {
+        :root {
             --main-font: 'Cairo', sans-serif;
             --purple-btn: linear-gradient(to bottom, #9d5bb1, #7b3e91);
             --green-btn: linear-gradient(to bottom, #69bc00, #4b8900);
@@ -31,12 +31,46 @@
             position: relative;
         }
 
-        /* حاوية المطر الملون */
+        /* --- 1. Background Pattern (40% Opacity) --- */
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('background .png');
+            background-repeat: repeat; /* Tiles the image */
+            background-size: 300px; /* Adjust this to make the pattern bigger/smaller */
+            opacity: 0.4;
+            z-index: -2; /* Behind everything */
+            pointer-events: none;
+        }
+
+        /* --- 2. Top Decoration (Behind content) --- */
+        .top-decor {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            max-height: 300px; /* Adjust based on image aspect ratio */
+            object-fit: cover;
+            z-index: 0; /* Behind buttons but above background */
+            opacity: 0.8;
+        }
+
+        /* --- 3. Bottom Left Decoration (Fixed) --- */
+        .bottom-decor {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 150px; /* Adjust size as needed */
+            z-index: 20; /* On top of most things */
+            pointer-events: none;
+        }
+
+        /* Rain Container */
         #rain-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: 1; /* Above background, below content */
         }
 
         .rain-drop {
@@ -44,11 +78,7 @@
             top: -250px;
             opacity: 0.9; 
             filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
-            animation: fall linear forwards;
-        }
-
-        @keyframes fall {
-            to { transform: translateY(130vh) rotate(360deg); }
+            /* Animation is defined in JS to handle random rotation better */
         }
 
         .content-wrapper {
@@ -59,6 +89,7 @@
             align-items: center;
             width: 100%;
             max-width: 500px;
+            margin-top: 50px; /* Added margin to clear the top image */
         }
 
         .logo-section {
@@ -108,6 +139,8 @@
             transition: 0.2s;
             border: 1px solid rgba(255,255,255,0.15);
             cursor: pointer;
+            position: relative; 
+            overflow: hidden;
         }
 
         .btn:active { transform: scale(0.96); }
@@ -143,6 +176,10 @@
 </head>
 <body>
 
+    <div class="bg-pattern"></div>
+
+    <img src="top .png" alt="Ramadan Decoration" class="top-decor">
+
     <div id="rain-container"></div>
 
     <div class="content-wrapper">
@@ -166,16 +203,18 @@
         </div>
     </div>
 
+    <img src="shap1.png" alt="Decoration" class="bottom-decor">
+
     <div class="modal-overlay" id="overlay">
         <div class="modal-card">
             <i class="fa-solid fa-quote-left" style="font-size: 40px; color: #9d5bb1; opacity: 0.8;"></i>
-            <p id="msg-text" style="direction: ltr; margin: 25px 0; font-size: 20px; font-weight: 700; color: #fff;"></p>
+            <p id="msg-text" style="direction: ltr; margin: 25px 0; font-size: 20px; font-weight: 700; color: #fff; line-height: 1.6;"></p>
             <button onclick="closeMsg()" style="background: var(--purple-btn); color: white; border: none; padding: 12px 40px; border-radius: 50px; cursor: pointer; font-weight: bold;">Close</button>
         </div>
     </div>
 
     <script>
-        // --- 1. تأثير المطر الكثيف ---
+        // --- 1. Enhanced Rain Effect (Sizes, Shapes, Angles) ---
         const rainContainer = document.getElementById('rain-container');
         const shapeFiles = ['fanoos 1.png', 'helal.png'];
 
@@ -183,52 +222,58 @@
             const drop = document.createElement('img');
             drop.src = shapeFiles[Math.floor(Math.random() * shapeFiles.length)];
             drop.classList.add('rain-drop');
+            
+            // Random Position X
             const startX = Math.random() * window.innerWidth;
-            const size = Math.random() * (180 - 100) + 100; 
-            const duration = Math.random() * (6 - 4) + 4; 
-            drop.style.left = (startX - 90) + 'px'; 
+            
+            // Random Size (Between 80px and 180px)
+            const size = Math.random() * (180 - 80) + 80; 
+            
+            // Random Speed
+            const duration = Math.random() * (6 - 3) + 3; 
+
+            // Random Starting Rotation (Angle)
+            const startRotation = Math.random() * 360; 
+
+            drop.style.left = (startX - 50) + 'px'; 
             drop.style.width = size + 'px';
-            drop.style.animationDuration = duration + 's';
+            
+            // Apply animation dynamically to include random rotation
+            drop.animate([
+                { transform: `translateY(-200px) rotate(${startRotation}deg)` },
+                { transform: `translateY(110vh) rotate(${startRotation + 360}deg)` }
+            ], {
+                duration: duration * 1000,
+                easing: 'linear',
+                fill: 'forwards'
+            });
+
             rainContainer.appendChild(drop);
+
+            // Cleanup
             setTimeout(() => { drop.remove(); }, duration * 1000);
         }
-        setInterval(createDrop, 120);
 
-        // --- 2. نظام الرسالة اليومية الواحدة فقط ---
-            const messages = [
-                `اوعي تدوس هنا قبل 1 رمضان عشان كل يوم هيظهرلك رسالتك الرمضانية :) <br> 
-                بنفكركم اننا اجازة اول يوم رمضان وموجودين من تاني يوم من الساعة 8 صباحا الي 2 صباحا <br> 
-                كل عام وانتم بخير 💜`
-            ];
+        // Create a drop every 150ms
+        setInterval(createDrop, 150);
+
+
+        // --- 2. Single Warning Message Logic ---
+        const singleMessage = `اوعي تدوس هنا قبل 1 رمضان عشان كل يوم هيظهرلك رسالتك الرمضانية :) <br> 
+        بنفكركم اننا اجازة اول يوم رمضان وموجودين من تاني يوم من الساعة 8 صباحا الي 2 صباحا <br> 
+        كل عام وانتم بخير 💜`;
 
         function handleDailyMessage() {
-            const today = new Date().toDateString(); // يحصل على التاريخ الحالي للهاتف
-            const lastSavedDate = localStorage.getItem('sprint_last_date');
-            const lastSavedMsg = localStorage.getItem('sprint_daily_msg');
-
-            let finalMessage = "";
-
-            if (lastSavedDate === today && lastSavedMsg) {
-                // إذا كان المستخدم قد رأى رسالة اليوم بالفعل، نعرضها هي نفسها
-                finalMessage = lastSavedMsg;
-            } else {
-                // إذا كان يوم جديد، نختار رسالة عشوائية جديدة ونحفظها
-                finalMessage = messages[Math.floor(Math.random() * messages.length)];
-                localStorage.setItem('sprint_last_date', today);
-                localStorage.setItem('sprint_daily_msg', finalMessage);
-            }
-
-            document.getElementById('msg-text').innerHTML = finalMessage;
+            // Directly show the message every time for now
+            document.getElementById('msg-text').innerHTML = singleMessage;
             document.getElementById('overlay').style.display = 'block';
         }
 
         function closeMsg() { document.getElementById('overlay').style.display = 'none'; }
+        
         document.getElementById('overlay').addEventListener('click', function(e) {
             if (e.target === this) closeMsg();
         });
     </script>
 </body>
-
 </html>
-
-
