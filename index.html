@@ -195,6 +195,10 @@
                 <span>اوعي تدوس هنا</span>
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
             </button>
+            <button class="btn secret" onclick="times()">
+                <span>مواعيدنا في رمضان</span>
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </button>
             <a href="https://wa.me/message/NZRG2BOX7BACH1" class="btn whatsapp" target="_blank"><span>whatsapp</span><i class="fa-brands fa-whatsapp"></i></a>
             <a href="https://www.facebook.com/share/17iQKvRjx4/?mibextid=wwXIfr" class="btn facebook" target="_blank"><span>facebook</span><i class="fa-brands fa-facebook-f"></i></a>
             <a href="https://www.tiktok.com/@sprinto.coworkingspace?_r=1&_t=ZS-92YJH7ADaI3" class="btn tiktok" target="_blank"><span>Tik Tok</span><i class="fa-brands fa-tiktok"></i></a>
@@ -260,14 +264,20 @@
 
         // --- 2. Single Warning Message Logic ---
         const singleMessage = `اوعي تدوس هنا قبل 1 رمضان عشان كل يوم هيظهرلك رسالتك الرمضانية :) <br> 
-        بنفكركم اننا اجازة اول يوم رمضان وموجودين من تاني يوم من الساعة 8 صباحا الي 2 صباحا <br> 
+        بنفكركم اننا اجازة اول يوم رمضان <br> 
         كل عام وانتم بخير 💜`;
+
+        const timesMessage = `بنفكركم اننا اجازة اول يوم رمضان و مواعيدنا من الساعة الثامنة صباحا حتي الثانية فجرا💜`
 
         function handleDailyMessage() {
             // Directly show the message every time for now
             document.getElementById('msg-text').innerHTML = singleMessage;
             document.getElementById('overlay').style.display = 'block';
         }
+
+        function times() {
+            document.getElementById('msg-text').innerHTML = timesMessage;
+            document.getElementById('overlay').style.display = 'block';
 
         function closeMsg() { document.getElementById('overlay').style.display = 'none'; }
         
@@ -277,4 +287,5 @@
     </script>
 </body>
 </html>
+
 
