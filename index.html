@@ -11,6 +11,7 @@
         :root {
             --main-font: 'Cairo', sans-serif;
             --purple-btn: linear-gradient(to bottom, #9d5bb1, #7b3e91);
+            --yellow-btn: linear-gradient(to bottom, #fdd700, #f8d300)
             --green-btn: linear-gradient(to bottom, #69bc00, #4b8900);
             --blue-btn: linear-gradient(to bottom, #0056e0, #003da1);
             --black-btn: linear-gradient(to bottom, #444, #222);
@@ -145,11 +146,12 @@
 
         .btn:active { transform: scale(0.96); }
         .secret { background: var(--purple-btn); color: #f6e395 !important; }
+        .times { background: var(--yellow-btn); }
         .whatsapp { background: var(--green-btn); }
         .facebook { background: var(--blue-btn); }
-        .tiktok { background: var(--black-btn); border: 1px solid #555; }
+        .tiktok { background: var(--black-btn); }
         .instagram { background: var(--orange-btn); }
-        .linkedin { background: var(--cyan-btn); width: 65%; margin: 5px auto; height: 50px; font-size: 17px; }
+        .linkedin { background: var(--cyan-btn); }
 
         .modal-overlay {
             display: none;
@@ -195,7 +197,7 @@
                 <span>اوعي تدوس هنا</span>
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
             </button>
-            <button class="btn secret" onclick="times()">
+            <button class="btn times" onclick="times()">
                 <span>مواعيدنا في رمضان</span>
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
             </button>
@@ -267,7 +269,7 @@
         بنفكركم اننا اجازة اول يوم رمضان <br> 
         كل عام وانتم بخير 💜`;
 
-        const timesMessage = `بنفكركم اننا اجازة اول يوم رمضان و مواعيدنا من الساعة الثامنة صباحا حتي الثانية فجرا💜`
+        const timesMessage = `بنفكركم اننا اجازة اول يوم رمضان و مواعيدنا من الساعة الثامنة صباحا حتي الثانية فجرا💜`;
 
         function handleDailyMessage() {
             // Directly show the message every time for now
@@ -287,5 +289,6 @@
     </script>
 </body>
 </html>
+
 
 
